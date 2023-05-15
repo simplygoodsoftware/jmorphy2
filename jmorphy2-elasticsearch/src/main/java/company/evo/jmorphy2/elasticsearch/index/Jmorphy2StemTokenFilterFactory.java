@@ -47,7 +47,7 @@ public class Jmorphy2StemTokenFilterFactory extends AbstractTokenFilterFactory {
                                           String name,
                                           Settings settings,
                                           Jmorphy2Service jmorphy2Service) {
-        super(indexSettings, name, settings);
+        super(name, settings);
 
         String lang = settings.get("lang", settings.get("name"));
         String substitutesPath = settings.get("char_substitutes_path");

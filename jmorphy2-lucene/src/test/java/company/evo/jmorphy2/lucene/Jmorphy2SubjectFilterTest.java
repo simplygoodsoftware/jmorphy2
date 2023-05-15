@@ -12,7 +12,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.core.WhitespaceTokenizer;
-import static org.apache.lucene.analysis.BaseTokenStreamTestCase.assertAnalyzesTo;
+import static org.apache.lucene.tests.analysis.BaseTokenStreamTestCase.assertAnalyzesTo;
 
 import company.evo.jmorphy2.nlp.Ruleset;
 import company.evo.jmorphy2.nlp.Tagger;

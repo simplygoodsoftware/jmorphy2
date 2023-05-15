@@ -9,7 +9,7 @@ import com.carrotsearch.randomizedtesting.RandomizedRunner;
 import java.io.IOException;
 
 import org.apache.lucene.analysis.Analyzer;
-import static org.apache.lucene.analysis.BaseTokenStreamTestCase.assertAnalyzesTo;
+import static org.apache.lucene.tests.analysis.BaseTokenStreamTestCase.assertAnalyzesTo;
 
 
 @RunWith(RandomizedRunner.class)

@@ -41,7 +41,7 @@ public class Jmorphy2SubjectTokenFilterFactory extends AbstractTokenFilterFactor
                                              String name,
                                              Settings settings,
                                              Jmorphy2Service jmorphy2Service) {
-        super(indexSettings, name, settings);
+        super(name, settings);
 
         String lang = settings.get("lang", settings.get("name"));
         if (lang == null) {

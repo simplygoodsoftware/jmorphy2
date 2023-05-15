@@ -25,7 +25,8 @@ tasks.register<Jar>(
     name = "jarTest"
 ) {
     dependsOn("testClasses")
-    classifier = "tests"
+    archiveClassifier.convention("tests");
+    archiveClassifier.set("tests");
     from(sourceSets.test)
 }
 

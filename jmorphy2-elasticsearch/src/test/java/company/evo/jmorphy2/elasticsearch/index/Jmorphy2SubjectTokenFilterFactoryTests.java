@@ -22,7 +22,7 @@ import java.nio.file.Path;
 import static org.hamcrest.Matchers.instanceOf;
 
 import org.apache.lucene.analysis.Analyzer;
-import static org.apache.lucene.analysis.BaseTokenStreamTestCase.assertAnalyzesTo;
+import static org.apache.lucene.tests.analysis.BaseTokenStreamTestCase.assertAnalyzesTo;
 
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;

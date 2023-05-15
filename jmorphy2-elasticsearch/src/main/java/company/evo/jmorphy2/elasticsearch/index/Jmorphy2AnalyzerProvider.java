@@ -36,7 +36,7 @@ public class Jmorphy2AnalyzerProvider extends AbstractIndexAnalyzerProvider<Jmor
                                     String name,
                                     Settings settings,
                                     Jmorphy2Service jmorphy2Service) {
-        super(indexSettings, name, settings);
+        super(name, settings);
         analyzer = new Jmorphy2Analyzer(
             jmorphy2Service.getMorphAnalyzer(
                 DEFAULT_LANGUAGE, null, Jmorphy2StemTokenFilterFactory.DEFAULT_CACHE_SIZE

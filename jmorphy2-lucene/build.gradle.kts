@@ -4,7 +4,7 @@ version = getLibraryVersion()
 
 dependencies {
     implementation("org.apache.lucene:lucene-core:${project.getLuceneVersion()}")
-    implementation("org.apache.lucene:lucene-analyzers-common:${project.getLuceneVersion()}")
+    implementation("org.apache.lucene:lucene-analysis-common:${project.getLuceneVersion()}")
     testImplementation("org.apache.lucene:lucene-test-framework:${project.getLuceneVersion()}")
 
     api(project(":jmorphy2-core"))

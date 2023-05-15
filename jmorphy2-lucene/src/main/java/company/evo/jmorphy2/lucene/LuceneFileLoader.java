@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.File;
 import java.io.InputStream;
 
-import org.apache.lucene.analysis.util.ResourceLoader;
+import org.apache.lucene.util.ResourceLoader;
 
 import company.evo.jmorphy2.FileLoader;
 

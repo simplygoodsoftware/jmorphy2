@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.util.ResourceLoader;
-import org.apache.lucene.analysis.util.ResourceLoaderAware;
-import org.apache.lucene.analysis.util.TokenFilterFactory;
+import org.apache.lucene.util.ResourceLoader;
+import org.apache.lucene.util.ResourceLoaderAware;
+import org.apache.lucene.analysis.TokenFilterFactory;
 
 import company.evo.jmorphy2.MorphAnalyzer;
 import company.evo.jmorphy2.JSONUtils;

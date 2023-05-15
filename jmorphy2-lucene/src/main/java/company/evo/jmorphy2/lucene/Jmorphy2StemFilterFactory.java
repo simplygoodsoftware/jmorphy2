@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.util.ResourceLoader;
-import org.apache.lucene.analysis.util.ResourceLoaderAware;
-import org.apache.lucene.analysis.util.TokenFilterFactory;
+import org.apache.lucene.util.ResourceLoader;
+import org.apache.lucene.util.ResourceLoaderAware;
+import org.apache.lucene.analysis.TokenFilterFactory;
 
 import company.evo.jmorphy2.JSONUtils;
 import company.evo.jmorphy2.MorphAnalyzer;
