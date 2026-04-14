@@ -18,7 +18,6 @@ import org.apache.lucene.analysis.TokenFilterFactory;
 import company.evo.jmorphy2.JSONUtils;
 import company.evo.jmorphy2.MorphAnalyzer;
 
-// TODO: Move factories into jmorphy2-solr
 public class Jmorphy2StemFilterFactory extends TokenFilterFactory implements ResourceLoaderAware {
     public static final String DICT_PATH_ATTR = "dict";
     public static final String REPLACES_PATH_ATTR = "replaces";

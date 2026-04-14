@@ -1,8 +1,20 @@
-ARG ES_VERSION=7.13.2
+# Build Elasticsearch image with the locally-built jmorphy2 plugin.
+#
+# Usage:
+#   ./gradlew :jmorphy2-elasticsearch:assemble
+#   podman build -t elasticsearch-jmorphy2 -f Dockerfile.elasticsearch .
+#   podman run --rm -p 9200:9200 \
+#     -e "ES_JAVA_OPTS=-Xmx1g" -e "discovery.type=single-node" \
+#     elasticsearch-jmorphy2
+#
+# Override Elasticsearch version (must match the version the plugin was built against):
+#   podman build --build-arg ES_VERSION=8.19.14 -t elasticsearch-jmorphy2 -f Dockerfile.elasticsearch .
+
+ARG ES_VERSION=8.19.14
 
 FROM docker.elastic.co/elasticsearch/elasticsearch:${ES_VERSION}
 
-ARG ES_VERSION=7.13.2
+COPY jmorphy2-elasticsearch/build/distributions/analysis-jmorphy2-*.zip /tmp/analysis-jmorphy2.zip
 
-RUN echo elasticsearch-plugin install --batch \
-  https://github.com/anti-social/jmorphy2/releases/download/v0.2.2-es${ES_VERSION}/analysis-jmorphy2-0.2.2-es${ES_VERSION}.zip
+RUN bin/elasticsearch-plugin install --batch file:///tmp/analysis-jmorphy2.zip \
+ && rm /tmp/analysis-jmorphy2.zip

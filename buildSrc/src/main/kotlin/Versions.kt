@@ -33,38 +33,32 @@ data class EsVersion(
 }
 
 object Versions {
-    val java = JavaVersion.VERSION_11
+    val java = JavaVersion.VERSION_17
 
-    val commonsCodec = "[1.10, 1.11]"
-    val commonsIo = "2.4"
+    val commonsCodec = "1.17.1"
+    val commonsIo = "2.17.0"
     val noggit = "0.8"
-    val caffeine = "3.0.2"
+    val caffeine = "3.1.8"
 
-    val junit = "4.11"
+    val junit = "4.13.2"
 
     val jmhGradlePlugin = "0.6.5"
 
     val esLuceneVersions = mapOf(
-        EsVersion(6, 6) to "7.6.0",
-        EsVersion(6, 7) to "7.7.0",
-        EsVersion(6, 8) to "7.7.3",
-        EsVersion(7, 0) to "8.0.0",
-        EsVersion(7, 1) to "8.0.0",
-        EsVersion(7, 2) to "8.0.0",
-        EsVersion(7, 3) to "8.1.0",
-        EsVersion(7, 4) to "8.2.0",
-        EsVersion(7, 5) to "7.3.0",
-        EsVersion(7, 6) to "7.4.0",
-        EsVersion(7, 7) to "7.5.1",
-        EsVersion(7, 8) to "7.5.1",
-        EsVersion(7, 9) to "8.6.2",
-        EsVersion(7, 10) to "8.7.0",
-        EsVersion(7, 11) to "8.7.0",
-        EsVersion(7, 12) to "8.8.0",
-        EsVersion(7, 13) to "8.8.2",
-        EsVersion(7, 14) to "8.9.0",
         EsVersion(8, 6) to "9.4.2",
         EsVersion(8, 7) to "9.5.0",
+        EsVersion(8, 8) to "9.6.0",
+        EsVersion(8, 9) to "9.7.0",
+        EsVersion(8, 10) to "9.7.0",
+        EsVersion(8, 11) to "9.8.0",
+        EsVersion(8, 12) to "9.9.1",
+        EsVersion(8, 13) to "9.10.0",
+        EsVersion(8, 14) to "9.10.0",
+        EsVersion(8, 15) to "9.11.1",
+        EsVersion(8, 16) to "9.12.0",
+        EsVersion(8, 17) to "9.12.0",
+        EsVersion(8, 18) to "9.12.1",
+        EsVersion(8, 19) to "9.12.2",
     )
 }
 
