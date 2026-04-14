@@ -14,7 +14,9 @@ ARG ES_VERSION=8.19.14
 
 FROM docker.elastic.co/elasticsearch/elasticsearch:${ES_VERSION}
 
-COPY jmorphy2-elasticsearch/build/distributions/analysis-jmorphy2-*.zip /tmp/analysis-jmorphy2.zip
+COPY --chown=elasticsearch:root \
+    jmorphy2-elasticsearch/build/distributions/analysis-jmorphy2-*.zip \
+    /tmp/analysis-jmorphy2.zip
 
 RUN bin/elasticsearch-plugin install --batch file:///tmp/analysis-jmorphy2.zip \
  && rm /tmp/analysis-jmorphy2.zip
