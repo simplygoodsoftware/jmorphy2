@@ -19,7 +19,6 @@ import company.evo.jmorphy2.nlp.Parser;
 import company.evo.jmorphy2.nlp.SimpleParser;
 import company.evo.jmorphy2.nlp.SubjectExtractor;
 
-// TODO: Move factories into jmorphy2-solr
 public class Jmorphy2SubjectFilterFactory extends TokenFilterFactory implements ResourceLoaderAware {
     public static final String DICT_PATH_ATTR = "dict";
     public static final String REPLACES_PATH_ATTR = "replaces";

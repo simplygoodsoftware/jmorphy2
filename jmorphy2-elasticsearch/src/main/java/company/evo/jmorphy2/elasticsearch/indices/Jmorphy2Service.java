@@ -32,6 +32,7 @@ import org.elasticsearch.env.Environment;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -45,6 +46,22 @@ public class Jmorphy2Service {
     private static final String JMORPHY2_DICT_LOCATION_SETTING =
         "indices.analysis.jmorphy2.dictionary.location";
     private static final String DEFAULT_JMORPHY2_DICT_LOCATION = "jmorphy2";
+
+    // Environment.configFile() was renamed to Environment.configDir() in Elasticsearch 8.15+.
+    // Resolve it reflectively so the plugin builds against both 8.10.x and 8.19.x.
+    private static Path envConfigDir(Environment env) {
+        try {
+            Method m;
+            try {
+                m = Environment.class.getMethod("configDir");
+            } catch (NoSuchMethodException e) {
+                m = Environment.class.getMethod("configFile");
+            }
+            return (Path) m.invoke(env);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("Cannot locate Environment config path accessor", e);
+        }
+    }
 
     private final Environment env;
 
@@ -95,7 +112,7 @@ public class Jmorphy2Service {
                 .cacheSize(key.cacheSize)
                 .dictPath(dictsPath.toString());
             if (key.substitutesPath != null) {
-                Path substitutesPath = env.configFile().resolve(key.substitutesPath);
+                Path substitutesPath = envConfigDir(env).resolve(key.substitutesPath);
                 morphBuilder.charSubstitutes(parseSubstitutes(substitutesPath));
             }
 
@@ -119,7 +136,7 @@ public class Jmorphy2Service {
             .cacheSize(key.cacheSize)
             .fileLoader(loader);
         if (key.substitutesPath != null) {
-            Path substitutesPath = env.configFile().resolve(key.substitutesPath);
+            Path substitutesPath = envConfigDir(env).resolve(key.substitutesPath);
             morphBuilder.charSubstitutes(parseSubstitutes(substitutesPath));
         }
 
@@ -134,7 +151,7 @@ public class Jmorphy2Service {
             Tagger tagger;
             if (key.taggerRulesPath != null) {
                 try (InputStream rulesStream =
-                             Files.newInputStream(env.configFile().resolve(key.taggerRulesPath))) {
+                             Files.newInputStream(envConfigDir(env).resolve(key.taggerRulesPath))) {
                     tagger = new SimpleTagger(morph,
                                               new Ruleset(rulesStream),
                                               key.taggerThreshold);
@@ -145,7 +162,7 @@ public class Jmorphy2Service {
             Parser parser;
             if (key.parserRulesPath != null) {
                 try (InputStream rulesStream =
-                     Files.newInputStream(env.configFile().resolve(key.parserRulesPath))) {
+                     Files.newInputStream(envConfigDir(env).resolve(key.parserRulesPath))) {
                     parser = new SimpleParser(morph,
                                               tagger,
                                               new Ruleset(rulesStream),
@@ -156,7 +173,7 @@ public class Jmorphy2Service {
             }
             String extractorRules;
             if (key.extractorRulesPath != null) {
-                extractorRules = Files.readString(env.configFile().resolve(key.extractorRulesPath));
+                extractorRules = Files.readString(envConfigDir(env).resolve(key.extractorRulesPath));
             } else {
                 extractorRules = "+NP,nomn +NP,accs -PP -Geox NOUN,nomn NOUN,accs LATN NUMB";
             }
@@ -168,7 +185,7 @@ public class Jmorphy2Service {
     }
 
     private Path resolveJmorphy2Directory(Settings settings, Environment env) {
-        Path configDir = env.configFile();
+        Path configDir = envConfigDir(env);
         String dictsLocation = settings.get(JMORPHY2_DICT_LOCATION_SETTING, null);
         if (dictsLocation != null) {
             return configDir.resolve(dictsLocation);

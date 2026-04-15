@@ -7,20 +7,28 @@ buildscript {
     }
     dependencies {
         classpath("org.elasticsearch.gradle:build-tools:${project.getElasticsearchVersion()}")
-        classpath("com.netflix.nebula:gradle-ospackage-plugin:9.1.1")
+        classpath("com.netflix.nebula:gradle-ospackage-plugin:11.10.1")
     }
 }
 
 apply(plugin = "idea")
 apply(plugin = "elasticsearch.esplugin")
-apply(plugin = "nebula.ospackage")
+apply(plugin = "com.netflix.nebula.ospackage")
 
 val pluginName = "analysis-jmorphy2"
+val libVersion: String = project.getLibraryVersion()
+
+// project.version is used for artifact filenames (zip/deb) — keep the ES suffix
+// so we can tell builds for different Elasticsearch versions apart.
+version = "${libVersion}-es${project.getElasticsearchVersion()}"
+
 configure<org.elasticsearch.gradle.plugin.PluginPropertiesExtension> {
     name = pluginName
     description = "Jmorphy2 plugin for ElasticSearch"
     classname = "company.evo.jmorphy2.elasticsearch.plugin.AnalysisJmorphy2Plugin"
-    version = project.version.toString()
+    // plugin-descriptor.properties gets the plain plugin version; the ES version
+    // is populated separately by the elasticsearch.esplugin plugin.
+    version = libVersion
     licenseFile = project.file("LICENSE.txt")
     noticeFile = project.file("NOTICE.txt")
 }
@@ -29,10 +37,6 @@ java {
     sourceCompatibility = Versions.java
     targetCompatibility = Versions.java
 }
-
-val libVersion: String = project.getLibraryVersion()
-
-version = "${libVersion}-es${project.getElasticsearchVersion()}"
 
 val versions = org.elasticsearch.gradle.VersionProperties.getVersions() as Map<String, String>
 
@@ -94,6 +98,12 @@ tasks.register<Copy>("copyShadowClasses") {
 }
 
 tasks.named("classes") {
+    dependsOn("copyShadowClasses")
+}
+
+tasks.matching {
+    it.name == "generateTestBuildInfo" || it.name == "pluginProperties"
+}.configureEach {
     dependsOn("copyShadowClasses")
 }
 
