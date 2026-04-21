@@ -31,9 +31,19 @@ if ! command -v gh >/dev/null; then
   exit 1
 fi
 
-if [[ -n "$(git status --porcelain)" ]]; then
-  echo "ERROR: working tree is dirty. Commit or stash first." >&2
-  git status --short >&2
+# --ignore-cr-at-eol tolerates CRLF vs LF differences, which appear when
+# the repo is checked out on Windows (autocrlf) but accessed from WSL.
+if ! git diff --quiet --ignore-cr-at-eol HEAD -- 2>/dev/null \
+    || ! git diff --quiet --cached --ignore-cr-at-eol HEAD -- 2>/dev/null; then
+  echo "ERROR: working tree is dirty (non-EOL changes). Commit or stash first." >&2
+  git diff --stat --ignore-cr-at-eol HEAD -- >&2
+  exit 1
+fi
+
+untracked="$(git ls-files --others --exclude-standard)"
+if [[ -n "$untracked" ]]; then
+  echo "ERROR: untracked files present:" >&2
+  echo "$untracked" >&2
   exit 1
 fi
 
