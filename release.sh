@@ -24,7 +24,12 @@ TAG="elastic-${ES_VERSION}"
 DIST_DIR="jmorphy2-elasticsearch/build/distributions"
 ZIP="${DIST_DIR}/analysis-jmorphy2-${LIB_VERSION}-es${ES_VERSION}.zip"
 
-echo ">>> Release: lib=${LIB_VERSION}, es=${ES_VERSION}, tag=${TAG}"
+# Extract owner/name from origin remote URL.
+# Works for both git@github.com:owner/name.git and https://github.com/owner/name(.git)
+REMOTE_URL="$(git remote get-url origin)"
+REPO="$(echo "$REMOTE_URL" | sed -E 's#^(git@github\.com:|https?://github\.com/)##; s#\.git$##')"
+
+echo ">>> Release: lib=${LIB_VERSION}, es=${ES_VERSION}, tag=${TAG}, repo=${REPO}"
 
 if ! command -v gh >/dev/null; then
   echo "ERROR: gh CLI not found. Install from https://cli.github.com/" >&2
@@ -82,16 +87,16 @@ else
   echo ">>> Tag $TAG already exists locally and on origin, skipping tag creation."
 fi
 
-if gh release view "$TAG" --repo "$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null || echo simplygoodsoftware/jmorphy2)" >/dev/null 2>&1; then
+if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
   echo ">>> Release $TAG already exists, uploading asset (--clobber)..."
-  gh release upload "$TAG" "$ZIP" --clobber
+  gh release upload "$TAG" --repo "$REPO" --clobber "$ZIP"
 else
   echo ">>> Publishing GitHub release $TAG..."
-  gh release create "$TAG" \
+  gh release create "$TAG" --repo "$REPO" \
     --title "Elastic ${ES_VERSION}" \
     --notes "Elastic ${ES_VERSION}" \
     "$ZIP"
 fi
 
 echo ">>> Done. Release URL:"
-gh release view "$TAG" --json url --jq .url
+gh release view "$TAG" --repo "$REPO" --json url --jq .url
