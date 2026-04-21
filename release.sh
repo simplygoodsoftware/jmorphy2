@@ -18,18 +18,13 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-ES_VERSION="${1:-$(cat es.version)}"
-LIB_VERSION="${2:-$(cat project.version | sed 's/-SNAPSHOT$//')}"
+ES_VERSION="${1:-$(tr -d '\r\n' <es.version)}"
+LIB_VERSION="${2:-$(tr -d '\r\n' <project.version | sed 's/-SNAPSHOT$//')}"
 TAG="elastic-${ES_VERSION}"
 DIST_DIR="jmorphy2-elasticsearch/build/distributions"
 ZIP="${DIST_DIR}/analysis-jmorphy2-${LIB_VERSION}-es${ES_VERSION}.zip"
 
 echo ">>> Release: lib=${LIB_VERSION}, es=${ES_VERSION}, tag=${TAG}"
-
-if [[ -z "${JAVA_HOME:-}" ]]; then
-  echo "ERROR: JAVA_HOME is not set (need JDK 17+)" >&2
-  exit 1
-fi
 
 if ! command -v gh >/dev/null; then
   echo "ERROR: gh CLI not found. Install from https://cli.github.com/" >&2
