@@ -9,11 +9,7 @@ import company.evo.jmorphy2.ProbabilityEstimator;
 import company.evo.jmorphy2.Tag;
 import company.evo.jmorphy2.units.AnalyzerUnit;
 
-import org.elasticsearch.SpecialPermission;
-
 import java.io.IOException;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.List;
 
 public class CachingMorphAnalyzer extends MorphAnalyzer {
@@ -47,14 +43,10 @@ public class CachingMorphAnalyzer extends MorphAnalyzer {
     ) {
         super(tagStorage, units, prob);
 
-        SpecialPermission.check();
-        cache = AccessController.doPrivileged(
-            (PrivilegedAction<LoadingCache<String, List<ParsedWord>>>) () ->
-                Caffeine.newBuilder()
-                    .maximumSize(cacheSize)
-                    .executor(Runnable::run)
-                    .build(super::parse)
-        );
+        cache = Caffeine.newBuilder()
+            .maximumSize(cacheSize)
+            .executor(Runnable::run)
+            .build(super::parse);
     }
 
     @Override
