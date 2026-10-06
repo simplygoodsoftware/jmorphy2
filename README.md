@@ -12,7 +12,7 @@ Java port of [pymorphy2](https://github.com/kmike/pymorphy2) — morphological a
 
 ### Building
 
-Default Elasticsearch version is defined in `es.version` (currently `8.19.14`).
+Default Elasticsearch version is defined in `es.version` (currently `8.19.22`).
 
 Build against the default version:
 
@@ -23,7 +23,7 @@ Build against the default version:
 Build against a specific Elasticsearch version:
 
 ```sh
-./gradlew :jmorphy2-elasticsearch:assemble -PesVersion=8.19.14
+./gradlew :jmorphy2-elasticsearch:assemble -PesVersion=8.19.22
 ```
 
 Supported Elasticsearch versions: `8.6.x`–`8.19.x`.
@@ -39,7 +39,7 @@ Install the assembled zip:
 ```sh
 export es_home=/usr/share/elasticsearch
 sudo ${es_home}/bin/elasticsearch-plugin install \
-  "file:$(pwd)/jmorphy2-elasticsearch/build/distributions/analysis-jmorphy2-0.2.4-es8.19.14.zip"
+  "file:$(pwd)/jmorphy2-elasticsearch/build/distributions/analysis-jmorphy2-0.2.4-es8.19.22.zip"
 ```
 
 Or run Elasticsearch with the locally-built plugin inside a container
