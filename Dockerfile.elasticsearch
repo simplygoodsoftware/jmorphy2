@@ -8,9 +8,9 @@
 #     elasticsearch-jmorphy2
 #
 # Override Elasticsearch version (must match the version the plugin was built against):
-#   podman build --build-arg ES_VERSION=8.19.22 -t elasticsearch-jmorphy2 -f Dockerfile.elasticsearch .
+#   podman build --build-arg ES_VERSION=8.19.23 -t elasticsearch-jmorphy2 -f Dockerfile.elasticsearch .
 
-ARG ES_VERSION=8.19.22
+ARG ES_VERSION=8.19.23
 
 FROM docker.elastic.co/elasticsearch/elasticsearch:${ES_VERSION}
 
